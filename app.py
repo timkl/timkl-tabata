@@ -1,58 +1,67 @@
-import os
-import shutil
 from gtts import gTTS
 from pydub import AudioSegment
+from countdown import countdown
 
-shutil.rmtree('temp')
-os.mkdir('temp')
+exerciseCount = int(raw_input('How many exercises? '))
+exerciseDuration = int(raw_input('Exercise duration? '))
+restDuration = int(raw_input('Rest duration? '))
 
-text1 = raw_input("Enter name of exercise1: ")
-text2 = raw_input("Enter name of exercise2: ")
-text3 = raw_input("Enter name of exercise3: ")
-
-tts1 = gTTS(text=text1, lang='en-us')
-tts2 = gTTS(text=text2, lang='en-us')
-tts3 = gTTS(text=text3, lang='en-us')
-ttsPause = gTTS(text="Pause!", lang='en-us')
-
-tts1.save("temp/exercise1.mp3")
-tts2.save("temp/exercise2.mp3")
-tts3.save("temp/exercise3.mp3")
-ttsPause.save("temp/pause.mp3")
-
-exercise1 = AudioSegment.from_mp3("temp/exercise1.mp3")
-exercise2 = AudioSegment.from_mp3("temp/exercise2.mp3")
-exercise3 = AudioSegment.from_mp3("temp/exercise3.mp3")
-pause = AudioSegment.from_mp3("temp/pause.mp3")
+tabata = []
+segmentPaths = []
+segments = []
 
 
-def countdown(seconds):
-    ticking = AudioSegment.from_mp3("audio/ticking.mp3")
-    milliseconds = seconds * 1000
-    countdown = ticking[:milliseconds]
-    return countdown
+class Exercise(object):
 
-exerciseCountdown = countdown(20)
-pauseCountdown = countdown(10)
+    def __init__(self, name, filePath):
+        self.name = name
+        self.filePath = filePath
+
+    # create method here that creates an exerciseCycle
+
+for e in range(0, int(exerciseCount)):
+    # Give the exercise a title
+    question = 'Enter the name of exercise ' + str(e+1) + ': '
+    exerciseName = raw_input(question)
+    # Add exercise + exercise parameters
+    filePath = 'temp/exercise' + str(e+1) + '.mp3'
+    exercise = Exercise(exerciseName, filePath)
+    tabata.append(exercise)
+
+
+# Create the soundbits that we need
+
+rest = gTTS(text="Rest!", lang='en-us')
+rest.save("temp/rest.mp3")
+rest = AudioSegment.from_mp3('temp/rest.mp3')
+
+exerciseCountdown = countdown(exerciseDuration)
+restCountdown = countdown(restDuration)
 
 exerciseCountdown.export("temp/exerciseCountdown.mp3", format="mp3")
-pauseCountdown.export("temp/pauseCountdown.mp3", format="mp3")
+restCountdown.export("temp/restCountdown.mp3", format="mp3")
+exerciseCountdown = AudioSegment.from_mp3('temp/exerciseCountdown.mp3')
+restCountdown = AudioSegment.from_mp3('temp/restCountdown.mp3')
 
 fanfare = AudioSegment.from_mp3("audio/fanfare.mp3")
 
-tabata = exercise1 + \
-            exerciseCountdown + \
-            pause + \
-            pauseCountdown + \
-            exercise2 + \
-            exerciseCountdown + \
-            pause + \
-            pauseCountdown + \
-            exercise3 + \
-            exerciseCountdown
+counter = 1
 
-tabata = tabata + tabata + fanfare
+for t in tabata:
+    tts = gTTS(text=t.name, lang='en-us')
+    tts.save(t.filePath)
+    exercise = AudioSegment.from_mp3(t.filePath)
+    segment = exercise + exerciseCountdown + rest + restCountdown
+    segmentPath = 'temp/segment' + str(counter) + '.mp3'
+    segment.export(segmentPath)
+    segmentPaths.append(segmentPath)
+    counter = counter + 1
 
-tabata.export("tabata.mp3", format="mp3")
 
-shutil.rmtree('temp')
+for s in segmentPaths:
+    segment = AudioSegment.from_mp3(s)
+    segments.append(segment)
+
+
+output = sum(segments) + fanfare
+output.export("temp/output.mp3", format="mp3")
