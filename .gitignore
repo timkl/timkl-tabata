@@ -1,12 +1,6 @@
 .Python
-[Bb]in
-[Ii]nclude
-[Ll]ib
-[Ll]ib64
-[Ll]ocal
-[Ss]cripts
-pyvenv.cfg
-.venv
+bin/
+include/
+lib/
 pip-selfcheck.json
-temp/*
-*.pyc
+helpers.pyc
