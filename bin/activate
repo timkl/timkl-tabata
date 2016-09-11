@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/timkl/Desktop/gtts/gtts-test"
+VIRTUAL_ENV="/Users/timkl/Desktop/gtts/timkl-tabata"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
