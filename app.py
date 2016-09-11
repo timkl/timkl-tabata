@@ -7,20 +7,23 @@ def promptUser():
     numExercises = int(raw_input('How many exercises? '))
     durExercise = int(raw_input('Exercise duration? '))
     durRest = int(raw_input('Rest duration? '))
+    numCycles = int(raw_input('How many cycles? '))
     for e in range(0, int(numExercises)):
         question = 'Enter the name of exercise ' + str(e+1) + ': '
         exercise = raw_input(question)
         exercises.append(exercise)
-    return Tabata(numExercises, durExercise, durRest, exercises)
+    return Tabata(numExercises, durExercise, durRest, exercises, numCycles)
 
 
 class Tabata(object):
 
-    def __init__(self, numExercises, durExercise, durRest, exercises):
+    def __init__(self, numExercises, durExercise,
+                 durRest, exercises, numCycles):
         self.numExercises = numExercises
         self.durExercise = durExercise
         self.durRest = durRest
         self.exercises = exercises
+        self.numCycles = numCycles
 
     def createTabataMp3(self):
         exerciseSnippets = []
@@ -37,7 +40,8 @@ class Tabata(object):
             exercise = exerciseSpeak + exerciseTick + restSpeak + restTick
             exerciseSnippets.append(exercise)
 
-        tabata = sum(exerciseSnippets) + fanfare
+        tabata = (sum(exerciseSnippets) * self.numCycles) + fanfare
+
         tabata.export("tabata.mp3", format="mp3")
 
 
