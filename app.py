@@ -3,6 +3,9 @@ from pydub import AudioSegment
 
 
 def promptUser():
+    '''
+    Take the users input and return a Tabata instance.
+    '''
     exercises = []
     numExercises = int(raw_input('How many exercises? '))
     durExercise = int(raw_input('Exercise duration? '))
@@ -16,7 +19,9 @@ def promptUser():
 
 
 class Tabata(object):
-
+    '''
+    Use the Tabata instance properties to create the mp3.
+    '''
     def __init__(self, numExercises, durExercise,
                  durRest, exercises, numCycles):
         self.numExercises = numExercises
