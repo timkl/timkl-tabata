@@ -38,7 +38,7 @@ class Tabata(object):
             exerciseSnippets.append(exercise)
 
         tabata = sum(exerciseSnippets) + fanfare
-        tabata.export("temp/tabata.mp3", format="mp3")
+        tabata.export("tabata.mp3", format="mp3")
 
 
 init = promptUser()
