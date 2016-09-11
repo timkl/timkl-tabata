@@ -7,12 +7,12 @@ Create a tabata workout mp3 from the command-line.
 Make sure that ffmpeg is installed:
 https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg
 
-Clone the repository.
+Clone the repository:
 ```
 git clone https://github.com/timkl/timkl-tabata.git
 ```
 
-Create a virtual environment.
+Create a virtual environment:
 ```
 virtualenv timkl-tabata && cd timkl-tabata
 ```
@@ -22,7 +22,7 @@ Install the dependencies:
 pip install -r requirements.txt
 ```
 
-Activate the environment.
+Activate the environment:
 ```
 source bin/activate
 ```
